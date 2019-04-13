@@ -1,0 +1,20 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "HDM 1040P"
+    },
+    {
+      "id": 2,
+      "name": "HDM 1041P"
+    },
+    {
+      "id": 3,
+      "name": "HDM 1042P"
+    },
+    {
+      "id": 4,
+      "name": "HDM 1043P"
+    }
+  ]
+}
