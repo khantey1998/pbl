@@ -1,0 +1,28 @@
+{
+  "customers": [
+    {
+      "keyword": "1040P",
+      "id": 1,
+      "autocompleteTerm":"khantey long",
+      "name": "khantey long"
+    },
+    {
+      "keyword": "1041P",
+      "id": 2,
+      "autocompleteTerm":"vuth dalin",
+      "name": "vuth dalin"
+    },
+    {
+      "keyword": "1042P",
+      "id": 3,
+      "autocompleteTerm":"monyneth sok",
+      "name": "monyneth sok"
+    },
+    {
+      "keyword": "1043P",
+      "id": 4,
+      "autocompleteTerm":"leo",
+      "name": "leo"
+    }
+  ]
+}

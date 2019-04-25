@@ -53,6 +53,7 @@ flutter:
     - assets/5.png
     - assets/6.jpg
     - assets/products.json
+    - assets/customers.json
 
   #  - images/a_dot_ham.jpeg
 

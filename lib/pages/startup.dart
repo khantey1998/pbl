@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pbl/pages/customers.dart';
 import './home.dart';
+import './order.dart';
 
 class LogInPage extends StatelessWidget {
   @override
@@ -84,7 +85,7 @@ class LogInPage extends StatelessWidget {
                       onPressed: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (BuildContext context) => CustomerListsPage(),
+                          builder: (BuildContext context) => Order(),
                         ),
                       ),
                       shape: RoundedRectangleBorder(
