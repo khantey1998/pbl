@@ -140,14 +140,122 @@ class _OrderState extends State<Order> {
               mainAxisSpacing: 1,
               crossAxisCount: 2,
               children: <Widget>[
-                Text('1'),
-                Text('2'),
-                Text('3'),
-                Text('4'),
+                Card(
+                  child: Column(
+                    children: <Widget>[
+                      Image.asset(
+                        "assets/stock.png",
+                        width: 50,
+                      ),
+                      Text("First Poducts"),
+                    ],
+                  ),
+                ),
+                Card(
+                  child: Column(
+                    children: <Widget>[
+                      Image.asset(
+                        "assets/stock.png",
+                        width: 50,
+                      ),
+                      Text("First Poducts"),
+                    ],
+                  ),
+                ),
+                Card(
+                  child: Column(
+                    children: <Widget>[
+                      Image.asset(
+                        "assets/stock.png",
+                        width: 50,
+                      ),
+                      Text("First Poducts"),
+                    ],
+                  ),
+                ),
+                Card(
+                  child: Column(
+                    children: <Widget>[
+                      Image.asset(
+                        "assets/stock.png",
+                        width: 50,
+                      ),
+                      Text("First Poducts"),
+                    ],
+                  ),
+                ),
+                Card(
+                  child: Column(
+                    children: <Widget>[
+                      Image.asset(
+                        "assets/stock.png",
+                        width: 50,
+                      ),
+                      Text("First Poducts"),
+                    ],
+                  ),
+                ),
+                Card(
+                  child: Column(
+                    children: <Widget>[
+                      Image.asset(
+                        "assets/stock.png",
+                        width: 50,
+                      ),
+                      Text("First Poducts"),
+                    ],
+                  ),
+                ),
+                Card(
+                  child: Column(
+                    children: <Widget>[
+                      Image.asset(
+                        "assets/stock.png",
+                        width: 50,
+                      ),
+                      Text("First Poducts"),
+                    ],
+                  ),
+                ),
+                Card(
+                  child: Column(
+                    children: <Widget>[
+                      Image.asset(
+                        "assets/stock.png",
+                        width: 50,
+                      ),
+                      Text("First Poducts"),
+                    ],
+                  ),
+                ),
+                Card(
+                  child: Column(
+                    children: <Widget>[
+                      Image.asset(
+                        "assets/stock.png",
+                        width: 50,
+                      ),
+                      Text("First Poducts"),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
-
+          Container(
+            width: 350,
+            child: FlatButton(
+              color: Colors.red,
+              disabledColor: Colors.grey,
+              onPressed: () {
+                /*...*/
+              },
+              child: Text(
+                "Order",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+          )
         ],
       ),
     );
