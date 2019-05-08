@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pbl/pages/startup.dart';
 import 'pages/order.dart';
+import 'pages/home.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Order(),
+      home: HomePage(),
     );
   }
 }

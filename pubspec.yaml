@@ -24,6 +24,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   autocomplete_textfield: ^1.6.4
+  fragment: ^0.2.2
 
 dev_dependencies:
   flutter_test:
@@ -54,6 +55,8 @@ flutter:
     - assets/6.jpg
     - assets/products.json
     - assets/customers.json
+    - assets/shopping_cart.png
+    - assets/stock.png
 
   #  - images/a_dot_ham.jpeg
 
