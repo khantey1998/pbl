@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pbl/pages/startup.dart';
 import 'pages/order.dart';
 import 'pages/home.dart';
+import 'pages/login.dart';
 
 void main() => runApp(MyApp());
 
@@ -11,9 +12,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'PBLCNT',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: Color(0xffa78066),
+        primarySwatch: Colors.brown,
       ),
-      home: HomePage(),
+      home: LogInPage(),
     );
   }
 }

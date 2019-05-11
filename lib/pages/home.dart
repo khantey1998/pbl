@@ -6,7 +6,6 @@ import 'report_list.dart';
 class HomePage extends StatefulWidget {
   final drawerItems = [
     DrawerItem("Home", Icons.home),
-    DrawerItem("Today PDO", Icons.playlist_add_check),
     DrawerItem("Customer List", Icons.list),
     DrawerItem("Delivery", Icons.add_shopping_cart),
     DrawerItem("Stock", Icons.account_balance),
@@ -31,26 +30,34 @@ class DrawerItem {
       mainAxisSpacing: 50,
       crossAxisCount: 2,
       children: <Widget>[
-        Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(5),
+        GestureDetector(
+          onTap: (){Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (BuildContext context) => Order(),
             ),
-          ),
-          elevation: 10,
-          color: Colors.lightBlueAccent,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Image.asset(
-                'assets/shopping_cart.png',
-                width: 100,
+          );},
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(5),
               ),
-              Text(
-                'PDO',
-                style: TextStyle(color: Colors.white),
-              ),
-            ],
+            ),
+            elevation: 10,
+            color: Color(0xffa78066),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Image.asset(
+                  'assets/shopping_cart.png',
+                  width: 100,
+                ),
+                Text(
+                  'PDO',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ],
+            ),
           ),
         ),
         Card(
@@ -60,7 +67,7 @@ class DrawerItem {
             ),
           ),
           elevation: 10,
-          color: Colors.lightBlueAccent,
+          color: Color(0xffa78066),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -80,7 +87,7 @@ class DrawerItem {
             ),
           ),
           elevation: 10,
-          color: Colors.lightBlueAccent,
+          color: Color(0xffa78066),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -99,7 +106,7 @@ class DrawerItem {
             ),
           ),
           elevation: 10,
-          color: Colors.lightBlueAccent,
+          color: Color(0xffa78066),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -124,9 +131,9 @@ class _HomePageState extends State<HomePage> {
       case 0:
         return home(context);
       case 1:
-        return Order();
-      case 2:
         return CustomerListsPage();
+      case 2:
+        return Text('hi');
       case 3:
         return Text('hello');
       case 4:
@@ -159,7 +166,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.drawerItems[_selectedDrawerIndex].title,),
-        backgroundColor: Colors.lightBlueAccent,
+        backgroundColor: Color(0xffa78066),
 
       ),
         //appBar: false ? AppBar(title: Text(widget.drawerItems[_selectedDrawerIndex].title,),) : null,
@@ -178,6 +185,7 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       body:_getDrawerItemWidget(_selectedDrawerIndex),
+
     );
   }
 }

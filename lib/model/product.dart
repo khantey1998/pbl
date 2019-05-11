@@ -8,14 +8,16 @@ class Product{
   String productName;
   int amount;
   double unitPrice;
+  String productUrl;
 
-  Product({this.keyword,this.id,this.autocompleteTerm, this.productName});
+  Product({this.keyword,this.id,this.autocompleteTerm, this.productName, this.productUrl});
   factory Product.fromJson(Map<String, dynamic> parsedJson) {
     return Product(
         keyword: parsedJson['keyword'] as String,
         id: parsedJson['id'],
         autocompleteTerm: parsedJson['autocompleteTerm'] as String,
-        productName: parsedJson['productName'] as String
+        productName: parsedJson['productName'] as String,
+        productUrl: parsedJson['productUrl']
     );
   }
 }

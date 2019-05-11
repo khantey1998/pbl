@@ -4,25 +4,29 @@
       "keyword": "1040P",
       "id": 1,
       "autocompleteTerm":"HDM 1040P",
-      "productName": "HDM 1040P"
+      "productName": "HDM 1040P",
+      "productUrl": "assets/a.jpg"
     },
     {
       "keyword": "1041P",
       "id": 2,
       "autocompleteTerm":"HDM 1041P",
-      "productName": "HDM 1041P"
+      "productName": "HDM 1041P",
+      "productUrl": "assets/b.jpg"
     },
     {
       "keyword": "1042P",
       "id": 3,
       "autocompleteTerm":"HDM 1042P",
-      "productName": "HDM 1042P"
+      "productName": "HDM 1042P",
+      "productUrl": "assets/c.jpg"
     },
     {
       "keyword": "1043P",
       "id": 4,
       "autocompleteTerm":"HDM 1043P",
-      "productName": "HDM 1043P"
+      "productName": "HDM 1043P",
+      "productUrl": "assets/d.jpg"
     }
   ]
 }

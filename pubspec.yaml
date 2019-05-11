@@ -57,6 +57,17 @@ flutter:
     - assets/customers.json
     - assets/shopping_cart.png
     - assets/stock.png
+    - assets/a.jpg
+    - assets/b.jpg
+    - assets/c.jpg
+    - assets/d.jpg
+    - assets/e.jpg
+    - assets/f.jpg
+    - assets/g.jpg
+    - assets/h.jpg
+    - assets/i.jpg
+    - assets/k.jpg
+    - assets/l.jpg
 
   #  - images/a_dot_ham.jpeg
 
