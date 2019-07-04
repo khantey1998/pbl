@@ -1,45 +1,138 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
+import 'package:flutter/cupertino.dart';
 
-class Customer extends StatelessWidget{
 
-  final String username;
-  final String profileUrl;
-  final String keyword;
-  final String autocompleteTerm;
-  final int id;
+class Customer{
+
+  final String name;
+  String profileUrl;
+  final int phone;
+  final String address;
+  int id;
 //  final int phoneNumber;
 //  final String email;
 
-  Customer({this.keyword,this.id,this.autocompleteTerm, this.username, this.profileUrl});
-  Customer.createCustomer(this.username, this.profileUrl, this.autocompleteTerm, this.keyword, this.id);
+  Customer({this.name,this.phone, this.address});
+  //Customer.createCustomer(this.username, this.profileUrl, this.autocompleteTerm, this.keyword, this.id);
   factory Customer.fromJson(Map<String, dynamic> parsedJson) {
     return Customer(
-        keyword: parsedJson['keyword'] as String,
-        id: parsedJson['id'],
-        autocompleteTerm: parsedJson['autocompleteTerm'] as String,
-        username: parsedJson['name'] as String
+        name: parsedJson['name'] as String,
+        phone: parsedJson['phone'],
+        address: parsedJson['address'] as String
     );
   }
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(title: Text(this.username), leading: Image.asset(profileUrl, width: 50,),);
-  }
+//  @override
+//  Widget build(BuildContext context) {
+//    return GestureDetector(
+//      onTap: (){
+//        showDialog(
+//          context: context,
+//          barrierDismissible: false,
+//          builder: (BuildContext context){
+//            return CupertinoAlertDialog(
+//              title: Row(
+//                children: <Widget>[
+//                  Text(this.username),
+//                  Icon(
+//                    Icons.add,
+//                    color: Color(0xffa78066),
+//                  ),
+//                ],
+//              ),
+//              content: Material(
+//                child: Column(
+//                  children: <Widget>[
+//                    TextField(
+//                      style: TextStyle(color: Colors.black45),
+//                      keyboardType: TextInputType.text,
+//                      cursorColor: Color(0xffa78066),
+//                      decoration: InputDecoration(
+//                        labelText: 'Name',
+//                        labelStyle: TextStyle(
+//                          color: Colors.black45,
+//                        ),
+//                        focusedBorder: OutlineInputBorder(
+//                          borderSide: BorderSide(color: Colors.white),
+//                          borderRadius: BorderRadius.circular(20),
+//                        ),
+//                        enabledBorder: OutlineInputBorder(
+//                          borderSide: BorderSide(color: Colors.white),
+//                          borderRadius: BorderRadius.circular(20),
+//                        ),
+//                        border: OutlineInputBorder(
+//                          borderSide: BorderSide(color: Colors.white),
+//                          borderRadius: BorderRadius.circular(20),
+//                        ),
+//                      ),
+//                    ),
+//                    TextField(
+//                      style: TextStyle(color: Colors.black45),
+//                      keyboardType: TextInputType.phone,
+//                      cursorColor: Color(0xffa78066),
+//                      decoration: InputDecoration(
+//                        labelText: 'Phone',
+//                        labelStyle: TextStyle(
+//                          color: Colors.black45,
+//                        ),
+//                        focusedBorder: OutlineInputBorder(
+//                          borderSide: BorderSide(color: Colors.white),
+//                          borderRadius: BorderRadius.circular(20),
+//                        ),
+//                        enabledBorder: OutlineInputBorder(
+//                          borderSide: BorderSide(color: Colors.white),
+//                          borderRadius: BorderRadius.circular(20),
+//                        ),
+//                        border: OutlineInputBorder(
+//                          borderSide: BorderSide(color: Colors.white),
+//                          borderRadius: BorderRadius.circular(20),
+//                        ),
+//                      ),
+//                    ),
+//                  ],
+//                ),
+//              ),
+//              actions: <Widget>[
+//                FlatButton(
+//                  onPressed: (){
+//                    Navigator.of(context).pop();
+//                  },
+//                  child: Text("Cancel"),
+//                ),
+//                FlatButton(
+//                  onPressed: (){
+//                    Navigator.of(context).pop();
+//                  },
+//                  child: Text("OK"),
+//                ),
+//              ],
+//            );
+//          },
+//        );
+//      },
+//      child: ListTile(
+//        title: Text(this.username),
+//        leading: CircleAvatar(
+//          backgroundImage: AssetImage(this.profileUrl),
+//        ),
+//      ),
+//    );
+//  }
 }
-class CustomerViewModel{
-  static List<Customer> customers;
-  static Future loadCustomers() async {
-    try {
-      customers = new List<Customer>();
-      String jsonString = await rootBundle.loadString('assets/customers.json');
-      Map parsedJson = json.decode(jsonString);
-      var categoryJson = parsedJson['customers'] as List;
-      for (int i = 0; i < categoryJson.length; i++) {
-        customers.add( Customer.fromJson(categoryJson[i]));
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
-}
+//class CustomerViewModel{
+//  static List<Customer> customers;
+//  static Future loadCustomers() async {
+//    try {
+//      customers = new List<Customer>();
+//      String jsonString = await rootBundle.loadString('assets/customers.json');
+//      Map parsedJson = json.decode(jsonString);
+//      var categoryJson = parsedJson['customers'] as List;
+//      for (int i = 0; i < categoryJson.length; i++) {
+//        customers.add( Customer.fromJson(categoryJson[i]));
+//      }
+//    } catch (e) {
+//      print(e);
+//    }
+//  }
+//}

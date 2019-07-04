@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'customers.dart';
 import 'order.dart';
 import 'report_list.dart';
+import 'products.dart';
+import 'deliveries.dart';
 
 class HomePage extends StatefulWidget {
   final drawerItems = [
@@ -60,62 +62,86 @@ class DrawerItem {
             ),
           ),
         ),
-        Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(5),
+        GestureDetector(
+          onTap: (){Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (BuildContext context) => DeliveryStatus(),
             ),
-          ),
-          elevation: 10,
-          color: Color(0xffa78066),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Image.asset('assets/delivery_truck_free_icon.png',
-                  width: 100),
-              Text(
-                'Delivery',
-                style: TextStyle(color: Colors.white),
+          );},
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(5),
               ),
-            ],
+            ),
+            elevation: 10,
+            color: Color(0xffa78066),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Image.asset('assets/delivery_truck_free_icon.png',
+                    width: 100),
+                Text(
+                  'Delivery',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ],
+            ),
           ),
         ),
-        Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(5),
+        GestureDetector(
+          onTap: (){Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (BuildContext context) => ProductListsPage(),
             ),
-          ),
-          elevation: 10,
-          color: Color(0xffa78066),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Image.asset('assets/stock.png', width: 100),
-              Text(
-                'Stock',
-                style: TextStyle(color: Colors.white),
+          );},
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(5),
               ),
-            ],
+            ),
+            elevation: 10,
+            color: Color(0xffa78066),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Image.asset('assets/stock.png', width: 100),
+                Text(
+                  'Stock',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ],
+            ),
           ),
         ),
-        Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(5),
+        GestureDetector(
+          onTap: (){Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (BuildContext context) => ReportList(),
             ),
-          ),
-          elevation: 10,
-          color: Color(0xffa78066),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Image.asset('assets/report-icon.png', width: 100),
-              Text(
-                'Report',
-                style: TextStyle(color: Colors.white),
+          );},
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(5),
               ),
-            ],
+            ),
+            elevation: 10,
+            color: Color(0xffa78066),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Image.asset('assets/report-icon.png', width: 100),
+                Text(
+                  'Report',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ],
+            ),
           ),
         ),
       ],
@@ -133,9 +159,9 @@ class _HomePageState extends State<HomePage> {
       case 1:
         return CustomerListsPage();
       case 2:
-        return Text('hi');
-      case 3:
         return Text('hello');
+//      case 3:
+//        return ProductListsPage();
       case 4:
         return ReportList();
 
@@ -175,8 +201,10 @@ class _HomePageState extends State<HomePage> {
           children: <Widget>[
             UserAccountsDrawerHeader(
               accountName: Text('khantey'),
-              accountEmail: Text('khanteylong@gmail.com'),
-              currentAccountPicture: CircleAvatar(child: Image.asset('assets/1.jpg'),),
+              accountEmail: Text('longchendakhantey@gmail.com'),
+              currentAccountPicture: CircleAvatar(
+                backgroundImage: AssetImage("assets/default.png"),
+              ),
             ),
             Column(
               children: drawerOptions,
