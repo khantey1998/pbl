@@ -14,7 +14,7 @@ class Order extends StatefulWidget {
 
 class _OrderState extends State<Order> {
   List<Product> orderedProducts;
-  List<Widget> myList;
+  List<Widget> allProducts;
   _OrderState();
 
   Text customerName;
@@ -24,28 +24,12 @@ class _OrderState extends State<Order> {
   GlobalKey<AutoCompleteTextFieldState<Customer>> customerKey = GlobalKey();
   TextEditingController controller = TextEditingController();
 
-//  void _loadData() async {
-//    await CustomerViewModel.loadCustomers();
-//    //await ProductViewModel.loadProducts();
-//  }
-
   @override
   void initState() {
     customerName = Text('Customers:');
-    myList = List();
+    allProducts = List();
     orderedProducts = List();
     super.initState();
-  }
-
-  void _showToast() {
-    Fluttertoast.showToast(
-        msg: "This is Center Short Toast",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIos: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0);
   }
 
   @override
@@ -178,12 +162,12 @@ class _OrderState extends State<Order> {
           ),
           Expanded(
             child: GridView.builder(
-                itemCount: myList.length,
+                itemCount: allProducts.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2),
                 itemBuilder: (BuildContext context, int index) {
                   return GestureDetector(
-                    child: myList[index],
+                    child: allProducts[index],
                     onTap: (){
                       showDialog(
                         context: context,

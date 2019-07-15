@@ -10,18 +10,27 @@ class Customer{
   String profileUrl;
   final int phone;
   final String address;
+  int saleID;
   int id;
-//  final int phoneNumber;
+
 //  final String email;
 
-  Customer({this.name,this.phone, this.address});
-  //Customer.createCustomer(this.username, this.profileUrl, this.autocompleteTerm, this.keyword, this.id);
+  Customer({this.name,this.phone, this.address, this.saleID});
   factory Customer.fromJson(Map<String, dynamic> parsedJson) {
     return Customer(
         name: parsedJson['name'] as String,
         phone: parsedJson['phone'],
-        address: parsedJson['address'] as String
+        address: parsedJson['address'] as String,
+        saleID: parsedJson['sale_id']
     );
+  }
+  Map toMap(){
+    var map = new Map<String, dynamic>();
+    map["name"] = name;
+    map["phone"] = phone;
+    map["address"] = address;
+    map["sale_id"] = saleID;
+    return map;
   }
 //  @override
 //  Widget build(BuildContext context) {
