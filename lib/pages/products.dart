@@ -4,7 +4,6 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 
-
 //class ProductListsPage extends StatefulWidget {
 //  ProductListsPage({Key key}) : super(key: key);
 //  @override
@@ -178,7 +177,7 @@ class _ProductState extends State<ProductListsPage> {
     setState(() {
       isLoading = true;
     });
-    final response = await http.get("http://10.0.2.2:8000/api/products");
+    final response = await http.get("http://pdo.pblcnt.com/api/products");
     if (response.statusCode == 200) {
       list = (json.decode(response.body) as List)
           .map((data) => new Product.fromJson(data))
@@ -187,7 +186,7 @@ class _ProductState extends State<ProductListsPage> {
         isLoading = false;
       });
     } else {
-      throw Exception('Failed to load Product');
+      throw Exception('Failed to load Product. Status code: ${response.statusCode}');
     }
   }
 
@@ -276,7 +275,6 @@ class _ProductState extends State<ProductListsPage> {
                   title: Text(list[index].productName),
                   trailing: Text(list[index].stock.toString()),
                 );
-
               },
             ),
     );

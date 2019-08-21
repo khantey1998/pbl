@@ -1,35 +1,31 @@
-import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:flutter/services.dart';
-import 'package:flutter/cupertino.dart';
-
-
 class Customer{
 
   final String name;
   String profileUrl;
-  final int phone;
+  final String phone;
   final String address;
   int saleID;
   int id;
 
 //  final String email;
 
-  Customer({this.name,this.phone, this.address, this.saleID});
+  Customer({this.name,this.phone, this.address, this.saleID, this.id});
   factory Customer.fromJson(Map<String, dynamic> parsedJson) {
     return Customer(
         name: parsedJson['name'] as String,
         phone: parsedJson['phone'],
         address: parsedJson['address'] as String,
-        saleID: parsedJson['sale_id']
+        saleID: parsedJson['sale_id'],
+        id: parsedJson['id']
     );
   }
   Map toMap(){
-    var map = new Map<String, dynamic>();
+    var map = Map<String, dynamic>();
     map["name"] = name;
     map["phone"] = phone;
     map["address"] = address;
     map["sale_id"] = saleID;
+    map["id"] = id;
     return map;
   }
 //  @override

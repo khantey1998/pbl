@@ -1,16 +1,26 @@
+import 'dart:async';
+import 'package:pbl/utils/auth_utils.dart';
+import 'package:pbl/utils/network_utils.dart';
 import 'package:flutter/material.dart';
-import 'customers.dart';
-import 'order.dart';
-import 'report_list.dart';
-import 'products.dart';
-import 'deliveries.dart';
+import 'package:pbl/pages/deliveries.dart';
+import 'package:pbl/pages/products.dart';
+import 'package:pbl/pages/report_list.dart';
+import 'package:pbl/pages/orders.dart';
+import 'package:pbl/pages/customers.dart';
+
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
+  static final String routeName = 'home';
+//  String userUrl = "http://pdo.pblcnt.com/api/auth/user";
+//  final User user;
+//  HomePage({Key key, this.user}): super(key:key);
   final drawerItems = [
     DrawerItem("Home", Icons.home),
     DrawerItem("Customer List", Icons.list),
     DrawerItem("Delivery", Icons.add_shopping_cart),
     DrawerItem("Stock", Icons.account_balance),
+    DrawerItem("Log Out", Icons.exit_to_app),
   ];
 
   @override
@@ -22,7 +32,7 @@ class DrawerItem {
   IconData icon;
   DrawerItem(this.title, this.icon);
 }
- Widget home(BuildContext context){
+Widget home(BuildContext context){
   return  Container(
     //  color: Colors.lightBlueAccent,
     child: GridView.count(
@@ -32,6 +42,7 @@ class DrawerItem {
       mainAxisSpacing: 50,
       crossAxisCount: 2,
       children: <Widget>[
+
         GestureDetector(
           onTap: (){Navigator.push(
             context,
@@ -147,10 +158,66 @@ class DrawerItem {
       ],
     ),
   );
- }
+}
 
 class _HomePageState extends State<HomePage> {
+
+  GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+  SharedPreferences _sharedPreferences;
+  var _authToken, _id, _name, _homeResponse;
   int _selectedDrawerIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchSessionAndNavigate();
+  }
+  _fetchSessionAndNavigate() async {
+    _sharedPreferences = await _prefs;
+    String authToken = AuthUtils.getToken(_sharedPreferences);
+    var id = _sharedPreferences.getInt(AuthUtils.userIdKey);
+    var name = _sharedPreferences.getString(AuthUtils.nameKey);
+
+    print("authtoken: $authToken");
+
+    _fetchProfile(authToken);
+
+    setState(() {
+      _authToken = authToken;
+      _id = id;
+      _name = name;
+    });
+
+    if(_authToken == null) {
+      _logout();
+    }
+  }
+  _fetchProfile(String authToken) async {
+    var responseJson = await NetworkUtils.fetch(authToken, '/api/auth/user');
+
+    if(responseJson == null) {
+
+      NetworkUtils.showSnackBar(_scaffoldKey, 'Something went wrong!');
+
+    } else if(responseJson == 'NetworkError') {
+
+      NetworkUtils.showSnackBar(_scaffoldKey, null);
+
+    } else if(responseJson['errors'] != null) {
+
+      _logout();
+
+    }
+
+    setState(() {
+      _homeResponse = responseJson.toString();
+    });
+  }
+  _logout() {
+    NetworkUtils.logoutUser(_scaffoldKey.currentContext, _sharedPreferences);
+  }
 
   _getDrawerItemWidget(int pos) {
     switch (pos) {
@@ -159,11 +226,11 @@ class _HomePageState extends State<HomePage> {
       case 1:
         return CustomerListsPage();
       case 2:
-        return Text('hello');
-//      case 3:
-//        return ProductListsPage();
+        return DeliveryStatus();
+      case 3:
+        return ProductListsPage();
       case 4:
-        return ReportList();
+        return _logout();
 
       default:
         return new Text("Error");
@@ -177,6 +244,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+
     var drawerOptions = <Widget>[];
     for (var i = 0; i < widget.drawerItems.length; i++) {
       var d = widget.drawerItems[i];
@@ -189,19 +257,25 @@ class _HomePageState extends State<HomePage> {
         ),
       );
     }
+    print("$_homeResponse");
+    print(_name);
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
-        title: Text(widget.drawerItems[_selectedDrawerIndex].title,),
+        //title: Text(widget.drawerItems[_selectedDrawerIndex].title,),
         backgroundColor: Color(0xffa78066),
+        actions: <Widget>[
+          IconButton(icon: Icon(Icons.exit_to_app), onPressed: _logout,),
+        ],
 
       ),
-        //appBar: false ? AppBar(title: Text(widget.drawerItems[_selectedDrawerIndex].title,),) : null,
+      //appBar: false ? AppBar(title: Text(widget.drawerItems[_selectedDrawerIndex].title,),) : null,
       drawer: Drawer(
         child: Column(
           children: <Widget>[
             UserAccountsDrawerHeader(
-              accountName: Text('khantey'),
-              accountEmail: Text('longchendakhantey@gmail.com'),
+              //accountName: Text(_name),
+              //accountEmail: Text(_authToken),
               currentAccountPicture: CircleAvatar(
                 backgroundImage: AssetImage("assets/default.png"),
               ),

@@ -15,7 +15,7 @@ class _SearchListState extends State<CustomerListsPage> {
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController addressController = TextEditingController();
-  String url = "http://10.0.2.2:8000/api/customers";
+  String url = "http://pdo.pblcnt.com/api/customers";
   List<Customer> allCustomers = List();
   var isLoading = false;
   _fetchData() async {
@@ -32,7 +32,7 @@ class _SearchListState extends State<CustomerListsPage> {
         isLoading = false;
       });
     } else {
-      throw Exception('Failed to load Customers');
+      throw Exception('Failed to load Customers ${response.statusCode}');
     }
   }
 
@@ -42,7 +42,7 @@ class _SearchListState extends State<CustomerListsPage> {
     super.initState();
   }
   Future<Customer> addCustomer(String url, {String body})  {
-    return  http.post(Uri.encodeFull(url), body: body,  headers: {"Accept":"application/json", "Content-Type":"application/json","Authorization":"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImUzNjY3NjBiMTc1NDc3ZDYxYzUyMjc3MjdmYmJiZjEzODExMWFjYWYxNDMyNTJjZGJiM2NiNWUxYWI4ODdiOTNiZTYxODE3YzA3NjYwZjRiIn0.eyJhdWQiOiIyIiwianRpIjoiZTM2Njc2MGIxNzU0NzdkNjFjNTIyNzcyN2ZiYmJmMTM4MTExYWNhZjE0MzI1MmNkYmIzY2I1ZTFhYjg4N2I5M2JlNjE4MTdjMDc2NjBmNGIiLCJpYXQiOjE1NTg5MjQ1OTEsIm5iZiI6MTU1ODkyNDU5MSwiZXhwIjoxNTkwNTQ2OTkxLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.al4kz1xkC-CN93Ehfz8twYu-qRDxIaCx-pb8FkD4Nxo__QR6LJ4Gs8-T2t2jyftMfq0LmMpWYfUHXGCtgNsT4xGV5IVcF_XCkZDL83-NdYQ9UciDevAqUEGW9aN6qpZJB6e62tD-WQCU9AYbwx5OIZEnXpv1uUVxhU2v6m04Jff9isgXsyEcBUzZD5Iq5dYigl7hYrEfEiqKed3ZT5zacVEfnbsnTKEqVH8P7DmBhWlgZU55ts5_uCSiMKsnk6r2tTc5vhFIZDUu-yBoSNcCrQahl5z8d806WkYo4J7zhIcLo4h_zmqFd3c7-NUG8MsxbEz7ENnvBnSYfLczBh-RJRdd2rlSCa8_pU6W2smFZaqMLzEcHyIPmZKG-VyX49HDSjQuDaVkbpid-AlWdCzId3HaKw3bJH-4uFCHczULbHBVBCYp61Yu94-4f_NqfW0DHDHdYGPo8uPxIeQUBeqmHMv6E0pPwOd2zvnQ5GHaBmV2_RGSzk_uQfpamJxXGPxCERv752OaMtuK0DOlwHRt8FIWzbwKoF5X-ZN-yOx9sfUlBjsJjg870v9tQYVMR7odbmYruCMZv1VgysugpmJJhpN5msc6f7gXKg6PQW8_mSkv2G7o2JCsUe4dIlCwxq0dLTfhNRcG0-8U4A95VR9jqKw9dzGvhzPo2amGLddIR6w"}).then((http.Response response) {
+    return  http.post(Uri.encodeFull(url), body: body,  headers: {"Accept":"application/json", "Content-Type":"application/json"}).then((http.Response response) {
       final int statusCode = response.statusCode;
       if (statusCode < 200 || statusCode > 400 || json == null) {
         throw new Exception("Error Code: $statusCode");
@@ -59,7 +59,7 @@ class _SearchListState extends State<CustomerListsPage> {
           ? Center(
         child: CircularProgressIndicator(),
       )
-          :Column(
+          :ListView(
         children: <Widget>[dataBody()],
       ),
       floatingActionButton: FloatingActionButton(
@@ -161,11 +161,10 @@ class _SearchListState extends State<CustomerListsPage> {
                     ),
                     FlatButton(
                       onPressed: () async{
-                        int phone = int.parse(phoneController.text);
-                        Customer newCustomer = Customer(name: nameController.text.toString(), address: addressController.text);
+                        //int phone = int.parse(phoneController.text);
+                        Customer newCustomer = Customer(name: nameController.text.toString(),phone: phoneController.text, address: addressController.text, saleID: saleID);
                         print(json.encode(newCustomer.toMap()));
                         await addCustomer(url, body: json.encode(newCustomer.toMap()));
-                        
                         Navigator.of(context).pop();
                       },
                       child: Text("OK"),

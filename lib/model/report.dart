@@ -1,35 +1,33 @@
-import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:flutter/services.dart';
-import 'package:flutter/cupertino.dart';
-
+import 'package:pbl/model/order_item.dart';
 class Report {
-  final String itemName;
-  final int soldAmount;
-  String importDate;
+  String customer;
+  int totalPrice;
+  List<OrderItem> orderItems;
+  String orderDate;
+  int id;
+  String status;
+  String address;
+  String contactNo;
 
-  Report({this.itemName, this.soldAmount, this.importDate});
+  Report({this.customer, this.orderItems, this.totalPrice, this.orderDate, this.id, this.status, this.address,this.contactNo});
   factory Report.fromJson(Map<String, dynamic> parsedJson) {
+    var list = parsedJson['order_items'] as List;
+    //print(list.runtimeType);
+    List<OrderItem> itemList = list.map((i) => OrderItem.fromJson(i)).toList();
     return Report(
-        itemName: parsedJson['itemName'] as String,
-        soldAmount: parsedJson['soldAmount'],
-        importDate: parsedJson['importDate'] as String);
+        customer: parsedJson['customer'] as String,
+        orderItems: itemList,
+        totalPrice: parsedJson['total_price'],
+        orderDate: parsedJson['order_date'],
+        id: parsedJson['id'],
+        status: parsedJson['status'],
+        address: parsedJson['address'],
+        contactNo: parsedJson['contact_no'] as String
+        );
   }
-}
-
-class ReportViewModel {
-  static List<Report> reports;
-  static Future loadReports() async {
-    try {
-      reports = new List<Report>();
-      String jsonString = await rootBundle.loadString('assets/reports.json');
-      Map parsedJson = json.decode(jsonString);
-      var categoryJson = parsedJson['reports'] as List;
-      for (int i = 0; i < categoryJson.length; i++) {
-        reports.add(Report.fromJson(categoryJson[i]));
-      }
-    } catch (e) {
-      print(e);
-    }
+  Map toMap(){
+    var map = Map<String, dynamic>();
+    map["customer"] = customer;
+    return map;
   }
 }

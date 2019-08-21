@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pbl/model/report.dart';
-import 'package:fragment/fragment.dart';
-import 'package:intl/intl.dart';
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-import 'package:datetime_picker_formfield/time_picker_formfield.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'report_detail.dart';
 
 class ReportList extends StatefulWidget{
   ReportList({Key key}) : super(key: key);
@@ -13,26 +12,34 @@ class ReportList extends StatefulWidget{
 }
 class _ReportListState extends State<ReportList> {
   DateTime date = DateTime.now();
-  List<Report> _list;
+  List<Report> reportList;
   final key = GlobalKey<ScaffoldState>();
+  var isLoading = false;
+  String url = "http://pdo.pblcnt.com/api/orders";
+  _fetchData() async {
+    setState(() {
+      isLoading = true;
+    });
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      print(response.body);
+      reportList = (json.decode(response.body) as List)
+          .map((data) => Report.fromJson(data))
+          .toList();
 
-  void _loadData() async {
-    ReportViewModel.loadReports();
-  }
-  Future<Null> _selectDate(BuildContext context) async{
-    final DateTime picked = await showDatePicker(context: context, initialDate: date, firstDate: DateTime(2018), lastDate: date);
-    if(picked != null && picked != date){
+
       setState(() {
-        date = picked;
-
+        isLoading = false;
       });
+    } else {
+      throw Exception(response.statusCode);
     }
   }
+
   @override
   void initState() {
-    _loadData();
-    _list = List();
-    _list = ReportViewModel.reports;
+    _fetchData();
+    reportList = List();
     super.initState();
   }
   @override
@@ -40,32 +47,33 @@ class _ReportListState extends State<ReportList> {
     return Scaffold(
       appBar: AppBar(title: Text("Reports"),),
       key: key,
-      body: Column(
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                RaisedButton(
-                  child: Text("From:"),
-                  onPressed: (){
-                    _selectDate(context);
-                  },
-                ),
-                SizedBox(width: 10,),
-                Text("${date.day}-${date.month}-${date.year}"),
-                SizedBox(width: 10,),
-                RaisedButton(
-                  child: Text("To:"),
-                  onPressed: (){
-                    _selectDate(context);
-                  },
-                ),
-                SizedBox(width: 10,),
-                Text("${date.day}-${date.month}-${date.year}"),
-              ],
-            ),
+      body: isLoading
+          ? Center(
+        child: CircularProgressIndicator(),
+      ):Container(
+          child:
+//            Row(
+//              children: <Widget>[
+//                RaisedButton(
+//                  child: Text("From:"),
+//                  onPressed: (){
+//                    _selectDate(context);
+//                  },
+//                ),
+//                SizedBox(width: 10,),
+//                Text("${date.day}-${date.month}-${date.year}"),
+//                SizedBox(width: 10,),
+//                RaisedButton(
+//                  child: Text("To:"),
+//                  onPressed: (){
+//                    _selectDate(context);
+//                  },
+//                ),
+//                SizedBox(width: 10,),
+//                Text("${date.day}-${date.month}-${date.year}"),
+//              ],
+//            ),
             dataBody()
-          ],
-
       )
     );
   }
@@ -73,23 +81,33 @@ class _ReportListState extends State<ReportList> {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: DataTable(
-
           columns: [
-            DataColumn(label: Text("Product",
+            DataColumn(label: Text("Customers",
               )),
-            DataColumn(label: Text("Import",
+            DataColumn(label: Text("Total Price",
                 )),
-            DataColumn(label: Text("Sold",
-                ))
           ],
-          rows: _list.map((report) =>
-              DataRow(cells: [
-                DataCell(Text(report.itemName)),
-                DataCell(Text(report.importDate)),
-                DataCell(Text(report.soldAmount.toString()))
-              ])).toList()
+          rows: reportList.map((report) =>
+              DataRow(
+                  cells: [
+                    DataCell(Text(report.customer),onTap: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ReportDetail(report: report),
+                        ),
+                      );
+                    }),
+                    DataCell(Text(report.totalPrice.toString()),onTap: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ReportDetail(report: report),
+                        ),
+                      );
+                    })
+                ])).toList()
       ),
-
     );
   }
 }

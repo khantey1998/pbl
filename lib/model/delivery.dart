@@ -17,19 +17,19 @@ class Delivery {
   }
 
 }
-class DeliveryViewModel{
-  static List<Delivery> deliveries;
-  static Future loadDeliveries() async {
-    try {
-      deliveries = new List<Delivery>();
-      String jsonString = await rootBundle.loadString('assets/deliveries.json');
-      Map parsedJson = json.decode(jsonString);
-      var categoryJson = parsedJson['deliveries'] as List;
-      for (int i = 0; i < categoryJson.length; i++) {
-        deliveries.add( Delivery.fromJson(categoryJson[i]));
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
-}
+//class DeliveryViewModel{
+//  static List<Delivery> deliveries;
+//  static Future loadDeliveries() async {
+//    try {
+//      deliveries = new List<Delivery>();
+//      String jsonString = await rootBundle.loadString('assets/deliveries.json');
+//      Map parsedJson = json.decode(jsonString);
+//      var categoryJson = parsedJson['deliveries'] as List;
+//      for (int i = 0; i < categoryJson.length; i++) {
+//        deliveries.add( Delivery.fromJson(categoryJson[i]));
+//      }
+//    } catch (e) {
+//      print(e);
+//    }
+//  }
+//}

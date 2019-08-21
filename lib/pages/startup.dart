@@ -1,30 +1,50 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:pbl/pages/login.dart';
 
-class StartUp extends StatefulWidget{
+class Greeting extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return null;
-  }
+  _GreetingState createState() => _GreetingState();
 }
-class StartUpState extends State<StartUp>{
+class _GreetingState extends State<Greeting> {
+  @override
+  initState() {
+    super.initState();
+    Timer(const Duration(seconds: 3), onClose);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Image.asset("assets/logo.png"),
-        ],
-      ),
+      body: Align(
+          alignment: FractionalOffset.center,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+//              Text(
+//                "Hello you !",
+//                style: Theme.of(context).textTheme.display1,
+//              ),
+                  Image.asset("assets/logo.png",
+                    height: 350.0,
+                    width: 350.0,
+                  ),
+            ],
+          )),
     );
   }
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
+
+  void onClose() {
+    Navigator.of(context).pushReplacement(PageRouteBuilder(
+        maintainState: true,
+        opaque: true,
+        pageBuilder: (context, _, __) => LoginPage(),
+        transitionDuration: const Duration(seconds: 1),
+        transitionsBuilder: (context, anim1, anim2, child) {
+          return FadeTransition(
+            child: child,
+            opacity: anim1,
+          );
+        }));
   }
 }
-
-
