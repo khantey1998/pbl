@@ -84,10 +84,22 @@ import 'package:pbl/pages/startup.dart';
 import 'pages/orders.dart';
 import 'pages/home.dart';
 import 'pages/login.dart';
+import 'package:pbl/model/customer.dart';
+import 'package:http/http.dart' as http;
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+
+
+//  Future<Customer> addCustomer(String url, {String body})  {
+//    return  http.post(Uri.encodeFull(url), body: body,  headers: {"Accept":"application/json", "Content-Type":"application/json"}).then((http.Response response) {
+//      final int statusCode = response.statusCode;
+//
+//
+//    });
+//  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

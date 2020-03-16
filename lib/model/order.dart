@@ -4,7 +4,7 @@ class OrderModel {
   int customerID;
   int saleID;
   int id;
-  String status;
+  int status;
   String note;
   List<OrderItem> orderItems;
 
@@ -13,7 +13,7 @@ class OrderModel {
   factory OrderModel.fromJson(Map<String, dynamic> parsedJson) {
     return OrderModel(
         customerID: parsedJson['customer_id'],
-        status: parsedJson['status'] as String,
+        status: parsedJson['status'],
         orderItems: parsedJson['order_items'],
         note: parsedJson['note'] as String,
         saleID: parsedJson['sale_id']

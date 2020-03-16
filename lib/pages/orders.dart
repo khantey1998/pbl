@@ -24,15 +24,15 @@ class _OrderState extends State<Order> {
   List<Product> allProducts = List();
   List<Customer> allCustomers = List();
   List<Widget> orderedProductList = List();
-
+  DateTime date = DateTime.now();
   bool productListIsEmpty = true;
   bool _isError = false;
+  bool isIncludedVAT = false;
   _OrderState();
 
   String customer;
   int customerID;
   int saleID = 1;
-
 
   AutoCompleteTextField productTextField;
   AutoCompleteTextField customerTextField;
@@ -112,11 +112,23 @@ class _OrderState extends State<Order> {
       print(quantities);
     } on FormatException {}
   }
+
 //  Widget singleItemList(int index) {
 //    Product product = orderedProducts[index];
 //
 //  }
-
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: date,
+        firstDate: DateTime(2018),
+        lastDate: DateTime(2022));
+    if (picked != null && picked != date) {
+      setState(() {
+        date = picked;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -125,27 +137,32 @@ class _OrderState extends State<Order> {
       appBar: AppBar(
         title: Text('Order'),
       ),
-      body: isLoading
-          ? Center(
+      body: isLoading ? Center(
               child: CircularProgressIndicator(),
             )
-          : Column(
+          : Container(
+        padding: EdgeInsets.fromLTRB(8, 8, 8, 0 ),
+        child: Column(
+          children: <Widget>[
+            Column(
               children: <Widget>[
-                Column(
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  
                   children: <Widget>[
-                    customerTextField = AutoCompleteTextField<Customer>(
-                      style: TextStyle(color: Colors.black, fontSize: 16.0),
+                    Flexible(child: customerTextField = AutoCompleteTextField<Customer>(
                       decoration: InputDecoration(
-                        suffixIcon: Container(
-                          width: 85.0,
-                          height: 60.0,
-                        ),
-                        contentPadding:
-                            EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 20.0),
-                        filled: true,
                         hintText: 'Please select vendor name',
-                        hintStyle: TextStyle(color: Colors.black12),
+                        fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25.0),
+                          borderSide: BorderSide(
+                          ),
+                        ),
+                        //fillColor: Colors.green
                       ),
+                      style: TextStyle(color: Colors.black, fontSize: 16.0),
+
                       itemBuilder: (context, item) {
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -180,57 +197,69 @@ class _OrderState extends State<Order> {
                       clearOnSubmit: false,
                       key: customerKey,
                       suggestions: allCustomers,
-                    ),
-                    productTextField = AutoCompleteTextField<Product>(
-                      style: TextStyle(color: Colors.black, fontSize: 16.0),
-                      decoration: InputDecoration(
-                        suffixIcon: Container(
-                          width: 85.0,
-                          height: 60.0,
+                    ),),
+                    SizedBox(width: 10,),
+                    Flexible(child: TextField(decoration: InputDecoration(
+                      hintText: 'Enter Product Name',
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(25.0),
+                        borderSide: BorderSide(
                         ),
-                        contentPadding:
-                            EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 20.0),
-                        filled: true,
-                        hintText: 'Enter Product Name',
-                        hintStyle: TextStyle(color: Colors.black12),
                       ),
-                      itemBuilder: (context, item) {
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              item.productName,
-                              style: TextStyle(fontSize: 16),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(15),
-                            ),
-                            Text(
-                              item.productName,
-                            ),
-                          ],
-                        );
-                      },
-                      itemFilter: (item, query) {
-                        return item.productName
-                            .toLowerCase()
-                            .startsWith(query.toLowerCase());
-                      },
-                      itemSorter: (a, b) {
-                        return a.productName.compareTo(b.productName);
-                      },
-                      itemSubmitted: (item) {
-                        var orderItem = OrderItem();
-                        orderItems.add(orderItem);
-                        orderedProducts.add(item);
-                        orderItem.productID = item.id;
-                        orderItem.name = item.productName;
-                        productTextField.textField.controller.text =
-                            item.productName;
-                        productListIsEmpty = false;
-                        setState(() {
+                      //fillColor: Colors.green
+                    ),)),
+                  ],
+                ),
+                SizedBox(height: 10,),
+                productTextField = AutoCompleteTextField<Product>(
+                  decoration: InputDecoration(
+                    hintText: 'Enter Product Name',
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(25.0),
+                      borderSide: BorderSide(
+                      ),
+                    ),
+                    //fillColor: Colors.green
+                  ),
+                  style: TextStyle(color: Colors.black, fontSize: 16.0),
 
-
+                  itemBuilder: (context, item) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          item.productName,
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(15),
+                        ),
+                        Text(
+                          item.productName,
+                        ),
+                      ],
+                    );
+                  },
+                  itemFilter: (item, query) {
+                    return item.productName
+                        .toLowerCase()
+                        .startsWith(query.toLowerCase());
+                  },
+                  itemSorter: (a, b) {
+                    return a.productName.compareTo(b.productName);
+                  },
+                  itemSubmitted: (item) {
+                    var orderItem = OrderItem();
+                    orderItems.add(orderItem);
+                    orderedProducts.add(item);
+                    orderItem.productID = item.id;
+                    orderItem.name = item.productName;
+                    productTextField.textField.controller.text =
+                        item.productName;
+                    productListIsEmpty = false;
+                    setState(() {
 //                          orderedProductList.add(
 //                            Card(
 //                              child: Column(
@@ -245,81 +274,100 @@ class _OrderState extends State<Order> {
 //                              ),
 //                            ),
 //                          );
-
-                        });
-                      },
-                      onFocusChanged: (hasFocus) {},
-                      suggestions: allProducts,
-                      clearOnSubmit: true,
-                      key: productKey,
-                    ),
-                  ],
+                    });
+                  },
+                  onFocusChanged: (hasFocus) {},
+                  suggestions: allProducts,
+                  clearOnSubmit: true,
+                  key: productKey,
                 ),
-                SizedBox(
-                  height: 15,
-                ),
-                productListIsEmpty
-                    ? Expanded(
-                        child: Center(
-                          child: Text("Select Products"),
+              ],
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            productListIsEmpty
+                ? Expanded(
+              child: Center(
+                child: Text("Select Products"),
+              ),
+            )
+                : Expanded(
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: DataTable(
+                    columns: [
+                      DataColumn(
+                        label: Text(
+                          "Products*",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14),
                         ),
-                      )
-                    : Expanded(
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.vertical,
-                          child: DataTable(
-                              columns: [
-                                DataColumn(
-                                  label: Text(
-                                    "Products*",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 14),
-                                  ),
-                                ),
-                                DataColumn(
-                                  label: Text(
-                                    "Qty*",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 14),
-                                  ),
-                                ),
-                                DataColumn(
-                                  label: Text(
-                                    "Price*",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 14),
-                                  ),
-                                ),
-                              ],
-                              rows: orderItems
-                                  .map(
-                                    (product) => DataRow(
-                                          cells: [
-                                            DataCell(
-                                              Text(product.name),
-                                            ),
-                                            DataCell(
-                                              TextField(
-                                                onChanged: (text){
-                                                  product.unitPrice = int.parse(text);
-                                                },
-                                              ),
-                                            ),
-                                            DataCell(
-                                              TextField(
-                                                onChanged: (text){
-                                                  product.quantity = int.parse(text);
-                                                },
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                  )
-                                  .toList()),
+                      ),
+                      DataColumn(
+                        label: Text(
+                          "Qty*",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14),
                         ),
+                      ),
+                      DataColumn(
+                        label: Text(
+                          "Price*",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14),
+                        ),
+                      ),
+                    ],
+                    rows: orderItems
+                        .map(
+                          (product) => DataRow(
+                        cells: [
+                          DataCell(
+                            Text(product.name),
+                          ),
+                          DataCell(
+                            TextField(
+                              decoration: InputDecoration(
+                                fillColor: Colors.white,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(25.0),
+                                  borderSide: BorderSide(
+                                  ),
+                                ),
+                                //fillColor: Colors.green
+                              ),
+                              onChanged: (text) {
+                                product.unitPrice =
+                                    int.parse(text);
+                              },
+                            ),
+                          ),
+                          DataCell(
+                            TextField(
+                              decoration: InputDecoration(
+                                fillColor: Colors.white,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(25.0),
+                                  borderSide: BorderSide(
+                                  ),
+                                ),
+                                //fillColor: Colors.green
+                              ),
+                              onChanged: (text) {
+                                product.quantity =
+                                    int.parse(text);
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                        .toList()),
+              ),
 //            child: ListView.builder(
 //                shrinkWrap: true,
 //                itemCount: orderedProducts.length,
@@ -470,93 +518,83 @@ class _OrderState extends State<Order> {
 ////                    },
 ////                  );
 //                }),
-                      ),
-                Container(
-                  child: TextField(
-                    controller: noteController,
-                    style: TextStyle(color: Colors.black45),
-                    keyboardType: TextInputType.text,
-                    cursorColor: Color(0xffa78066),
-                    decoration: InputDecoration(
-                      labelText: 'Note',
-                      labelStyle: TextStyle(
-                        color: Colors.black,
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  width: 400,
-                  child: FlatButton(
-                    color: Color(0xffa78066),
-                    disabledColor: Colors.grey,
-                    onPressed: (){
-//                      orderItems.add(orderItem);
-//                      setState(() {});
-                      OrderModel newOrder = OrderModel(
-                          customerID: 1,
-                          status: "incoming",
-                          orderItems: orderItems,
-                          note: noteController.text,
-                          saleID: saleID);
-                      print(newOrder.toMap());
-                    },
-//                    onPressed: () async {
-//                      orderItems.add(orderItem);
-//                      setState(() {});
-//                      OrderModel newOrder = OrderModel(
-//                          customerID: 1,
-//                          status: "incoming",
-//                          orderItems: orderItems,
-//                          note: noteController.text,
-//                          saleID: saleID);
-//                      print(newOrder.toMap());
-//                      await createOrder(orderUrl,
-//                          body: json.encode(newOrder.toMap()));
-//
-//                      showDialog(
-//                          context: context,
-//                          barrierDismissible: false,
-//                          builder: (BuildContext context) {
-//                            return CupertinoAlertDialog(
-//                              actions: <Widget>[
-//                                FlatButton(
-//                                  onPressed: () {
-//                                    Route route = MaterialPageRoute(
-//                                        builder: (context) => HomePage());
-//                                    Navigator.pushReplacement(context, route);
-//                                  },
-//                                  child: Text("OK"),
-//                                ),
-//                              ],
-//                              content: Material(
-//                                child: Center(
-//                                  child: Text("Order has been sent!"),
-//                                ),
-//                              ),
-//                            );
-//                          });
-//                    },
-                    child: Text(
-                      "Order",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                )
-              ],
             ),
+            Container (
+              child: TextFormField(
+                decoration: InputDecoration(
+                  labelText: "Note",
+                  fillColor: Colors.white,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(25.0),
+                    borderSide: BorderSide(
+                    ),
+                  ),
+                  //fillColor: Colors.green
+                ),
+                validator: (val) {
+                  if(val.length==0) {
+                    return "Required";
+                  }else{
+                    return null;
+                  }
+                },
+                keyboardType: TextInputType.text,
+                style: new TextStyle(
+                  fontFamily: "Poppins",
+                ),
+              ),),
+            Container(
+              child: Row(
+                children: <Widget>[
+                  RaisedButton(
+                    child: Text("Delivery Date:"),
+                    onPressed: () {
+                      _selectDate(context);
+                    },
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text("${date.day}-${date.month}-${date.year}"),
+                  SizedBox(
+                    width: 20,
+                  ),
+
+                  Text("VAT include ?"),
+                  Checkbox(value: isIncludedVAT, onChanged: (bool val){
+                    setState(() {
+                      isIncludedVAT = val;
+                    });
+                  })
+
+                  //mainAxisSize: MainAxisSize.min,
+
+                ],
+              ),
+            ),
+            Container(
+              width: 400,
+              child: FlatButton(
+                color: Color(0xffa78066),
+                disabledColor: Colors.grey,
+                onPressed: () {
+                  OrderModel newOrder = OrderModel(
+                      customerID: 1,
+                      status: 1,
+                      orderItems: orderItems,
+                      note: noteController.text,
+                      saleID: saleID);
+                  print(newOrder.toMap());
+                },
+                child: Text(
+                  "Order",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+            )
+          ],
+        ),
+      )
     );
   }
 }
